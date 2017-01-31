@@ -13,6 +13,18 @@ int main(void) {
 
   hashtable* ht=NULL;
   init(&ht);
+  /*
+  printf("hashtable size is %d", ht->size);
+  put(ht, 10, 15);
+
+  int nvs=10;
+  int res[nvs];
+  for (int y = 0; y < nvs; y++){
+		  res[y] = 0;
+  }
+  get(ht, 10, res, nvs);
+  printf("got result of %d", res[0]);
+  */
 
   int seed = 1;
   srand(seed);
@@ -29,8 +41,12 @@ int main(void) {
     printf("\t(%d -> %d) \n", keys[i], values[i]);
   }
 
+  //results and initialize to 0
   int num_values = 1;
   int results[num_values];
+  for (int y = 0; y < num_values; y++){
+		  results[y] = 0;
+  }
 
   for (int i = 0; i < num_tests; i += 1) {
     int index = rand() % num_tests;
@@ -39,7 +55,7 @@ int main(void) {
     if (results[0] != values[index]) {
       printf("Test failed with key %d. Got value %d. Expected value %d.\n", target_key, results[0], values[index]);
       return 1;
-    } 
+    }else { printf("*"); } 
   }
 
   printf("Passed tests for putting and getting.\n");
