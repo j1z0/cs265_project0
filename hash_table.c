@@ -90,6 +90,49 @@ int get_all_nodes(keyType key, valType *values, int num_values, keynode *first) 
 }
 
 
+keynode* erase_all_nodes(keyType key, keynode *first) {
+	printf("erase all nodes \n");
+	if (first->key == key) {
+			if (first->next == NULL) {
+					printf("erase with just one");
+					return NULL;
+			} else {
+				first = first->next;
+			}
+	}
+	// ok now we have more than one object and first object aint it
+	keynode *prev = first;
+	keynode *cur = first;
+	int found = 0;
+	printf("start with prev key is %d\n", prev->key);
+	printf("start with cur  key is %d\n", cur->key);
+	while (cur != NULL) {
+		if (cur->key == key) {
+			printf("found it");
+			found ++;
+			prev->next = cur->next;
+		}
+/*
+			if (prev != NULL) { // we not the first item
+					prev->next = cur->next;
+					// clean up cur
+					free(cur);
+					cur = prev;
+			} 
+			else 
+			{ // first node
+					first = cur->next;
+					prev = cur;
+			}
+					// clean up first node
+		}
+		*/
+	    cur = cur->next;
+	}
+	// printf("no more");
+	return first;
+}
+
 // get entries with a matching key and stores the corresponding values in the
 // values array. The size of the values array is given by the parameter
 // num_values. If there are more matching entries than num_values, they are not
@@ -98,36 +141,24 @@ int get_all_nodes(keyType key, valType *values, int num_values, keynode *first) 
 // num_values, the caller can invoke this function again (with a larger buffer)
 // to get values that it missed during the first call. 
 int get(hashtable* ht, keyType key, valType *values, int num_values) {
-    //(void) ht;
-    //(void) key;
-    //(void) values;
-    //(void) num_values;
 	int idx = hash(ht, key);
 	// printf("in get idx is %d", idx);
 	// printf("there we got %d", ht->storage[idx]->value);
 	if (ht->storage[idx] == NULL){
 			// printf("key not found -1");
-			return -1;
+			return 0;
     }
 
 	int num_nodes = get_all_nodes(key, values, num_values, ht->storage[idx]);
-	/*if (num_nodes <= num_values) {
-			for (int j = 0 ; j < num_nodes; j++) {
-					values[j] = all_vals[j];
-			}
-	} else { // to much to return
-	}
-	*/
 	return num_nodes;
-
-
-
-
-    return 0;
 }
 
 // erase a key-value pair from the hash talbe
 void erase(hashtable* ht, keyType key) {
-    (void) ht;
-    (void) key;
+	int idx = hash(ht, key);
+	// printf("in get idx is %d", idx);
+	// printf("there we got %d", ht->storage[idx]->value);
+	if (ht->storage[idx] != NULL){
+	    ht->storage[idx] = erase_all_nodes(key, ht->storage[idx]);
+    }
 }

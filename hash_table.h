@@ -1,5 +1,6 @@
 #ifndef HASH_TABLE_GUARD
 #define HASH_TABLE_GUARD
+// try with INIT_SIZE to be prime, less hash collisions
 #define INIT_SIZE 20
 
 
